@@ -6,35 +6,44 @@ import org.testng.annotations.Test;
 
 import com.insiderOne.core.BaseUiTest;
 import com.insiderOne.ui.pages.HomePage;
-import com.insiderOne.ui.pages.JobListPage;
-import com.insiderOne.ui.pages.OpenRolesPage;
+import com.insiderOne.ui.pages.LeverApplicationFormPage;
+import com.insiderOne.ui.pages.LeverApplicationPage;
+import com.insiderOne.ui.pages.LeverQAJobsPage;
 
 public class ApplyRedirectTest extends BaseUiTest {
 
-    private static final String LOCATION_ISTANBUL = "Istanbul, Turkey";
-    private static final String DEPARTMENT_QA = "Quality Assurance";
-    private static final String LEVER_HOST_FRAGMENT = "jobs.lever.co";
+    private static final String JOB_TITLE = "Software Quality Assurance Engineer (Remote)";
+    private static final String LOCATION_ISTANBUL = "Istanbul";
 
-    @Test(enabled = false, description = "Apply action redirects to Lever application page")
+    @Test(description = "Apply action redirects to Lever application page")
     public void shouldRedirectToLeverOnApply() {
-        new HomePage()
+        LeverQAJobsPage leverJobsPage = new HomePage()
                 .open()
                 .acceptCookieConsentIfPresent()
-                .openCompanyMenu()
-                .goToCareers()
+                .dismissAnnouncementBannerIfPresent()
+                .clickWereHiring()
                 .waitUntilLoaded()
-                .clickSeeAllTeams();
+                .clickSeeAllTeams()
+                .openQualityAssuranceJobs();
 
-        JobListPage jobListPage = new OpenRolesPage()
-                .selectLocation(LOCATION_ISTANBUL)
-                .selectDepartment(DEPARTMENT_QA)
-                .applyFilters()
-                .showFilteredJobs();
+        assertThat(leverJobsPage.hasIstanbulLocationAmongQAJobs())
+                .as("Istanbul QA job listing")
+                .isTrue();
 
-        jobListPage.clickViewRoleForJob(0).clickApplyForJob(0);
+        LeverApplicationPage applicationPage =
+                leverJobsPage.clickApplyForJob(JOB_TITLE, LOCATION_ISTANBUL);
 
-        assertThat(jobListPage.getApplyRedirectUrl())
-                .as("Apply redirect URL")
-                .contains(LEVER_HOST_FRAGMENT);
+        assertThat(applicationPage.getJobTitle())
+                .as("Lever application page job title")
+                .isEqualTo(JOB_TITLE);
+        assertThat(applicationPage.hasApplySubmitButton())
+                .as("Lever application submit button")
+                .isTrue();
+
+        LeverApplicationFormPage applicationFormPage = applicationPage.openApplicationForm();
+
+        assertThat(applicationFormPage.isResumeUploadPresent())
+                .as("Lever application form resume upload")
+                .isTrue();
     }
 }
