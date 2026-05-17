@@ -14,6 +14,8 @@ public class CareersPage extends BasePage {
     private static final By SEE_ALL_TEAMS_BUTTON = By.cssSelector("a.inso-btn.see-more");
     private static final By SEE_MORE_DEPARTMENT_CARD =
             By.cssSelector(".insiderone-icon-cards-see-more-div [data-department]");
+    private static final By QA_TEAM_OPEN_ROLES_LINK =
+            By.cssSelector("a[href*=\"team=Quality%20Assurance\"]");
 
     public CareersPage waitUntilLoaded() {
         WaitUtils.waitForUrlContains(CAREERS_URL_FRAGMENT);
@@ -41,6 +43,14 @@ public class CareersPage extends BasePage {
         By departmentCard = departmentCardLocator(department);
         scrollIntoView(departmentCard);
         return isDisplayed(departmentCard);
+    }
+
+    public LeverQAJobsPage openQualityAssuranceJobs() {
+        String originalWindow = driver.getWindowHandle();
+        scrollIntoView(QA_TEAM_OPEN_ROLES_LINK);
+        click(QA_TEAM_OPEN_ROLES_LINK);
+        switchToNewWindowIfOpened(originalWindow);
+        return new LeverQAJobsPage().waitUntilLoaded();
     }
 
     private static By departmentCardLocator(String department) {

@@ -1,6 +1,7 @@
 package com.insiderOne.ui.pages;
 
 import java.util.List;
+import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
@@ -64,5 +65,15 @@ public abstract class BasePage {
         WebElement element = waitForVisible(locator);
         ((JavascriptExecutor) driver)
                 .executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+    }
+
+    protected void switchToNewWindowIfOpened(String originalWindow) {
+        Set<String> handles = driver.getWindowHandles();
+        if (handles.size() > 1) {
+            handles.stream()
+                    .filter(handle -> !handle.equals(originalWindow))
+                    .findFirst()
+                    .ifPresent(handle -> driver.switchTo().window(handle));
+        }
     }
 }
