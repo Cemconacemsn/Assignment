@@ -64,7 +64,7 @@ pip install locust
 locust -f src/test/java/load/locustfile.py
 ```
 
-Details: [src/test/java/load/scenarios.md](src/test/java/load/scenarios.md).
+Details: [src/test/java/load/scenarios.mdsrc/test/java/load/scenarios.md).
 
 ## Configuration
 
