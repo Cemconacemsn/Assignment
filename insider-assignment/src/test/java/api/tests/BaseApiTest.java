@@ -11,6 +11,5 @@ public abstract class BaseApiTest extends BaseTest {
     @BeforeClass(alwaysRun = true)
     public void configureRestAssured() {
         RestAssured.requestSpecification = ApiClient.defaultSpec();
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 }

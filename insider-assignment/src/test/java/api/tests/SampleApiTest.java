@@ -11,9 +11,12 @@ import api.models.Post;
 
 public class SampleApiTest extends BaseApiTest {
 
+    private static final String JSON_PLACEHOLDER_URI = "https://jsonplaceholder.typicode.com";
+
     @Test(description = "GET /posts/1 returns expected post id and title")
     public void shouldReturnPostById() {
         var response = given()
+                .baseUri(JSON_PLACEHOLDER_URI)
                 .pathParam("id", 1)
                 .when()
                 .get("/posts/{id}")
@@ -33,6 +36,7 @@ public class SampleApiTest extends BaseApiTest {
     @Test(description = "GET /posts returns a non-empty list")
     public void shouldReturnPostsList() {
         int size = given()
+                .baseUri(JSON_PLACEHOLDER_URI)
                 .when()
                 .get("/posts")
                 .then()
