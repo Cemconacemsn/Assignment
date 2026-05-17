@@ -1,12 +1,12 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Full regression" verbose="1" parallel="false">
   <listeners>
-    <listener class-name="ui.utils.TestListener"/>
+    <listener class-name="com.insiderOne.listener.TestListener"/>
   </listeners>
 
   <test name="UI tests">
     <packages>
-      <package name="ui.tests"/>
+      <package name="com.insiderOne.ui.tests"/>
     </packages>
   </test>
 
