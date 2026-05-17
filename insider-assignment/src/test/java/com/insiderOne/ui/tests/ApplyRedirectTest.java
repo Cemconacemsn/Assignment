@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.testng.annotations.Test;
 
 import com.insiderOne.core.BaseUiTest;
-import com.insiderOne.ui.pages.CareersPage;
 import com.insiderOne.ui.pages.HomePage;
 import com.insiderOne.ui.pages.JobListPage;
+import com.insiderOne.ui.pages.OpenRolesPage;
 
 public class ApplyRedirectTest extends BaseUiTest {
 
@@ -17,15 +17,15 @@ public class ApplyRedirectTest extends BaseUiTest {
 
     @Test(enabled = false, description = "Apply action redirects to Lever application page")
     public void shouldRedirectToLeverOnApply() {
-        CareersPage careersPage = new HomePage()
+        new HomePage()
                 .open()
                 .acceptCookieConsentIfPresent()
                 .openCompanyMenu()
                 .goToCareers()
-                .waitUntilLoaded();
+                .waitUntilLoaded()
+                .clickSeeAllTeams();
 
-        JobListPage jobListPage = careersPage
-                .clickSeeAllTeams()
+        JobListPage jobListPage = new OpenRolesPage()
                 .selectLocation(LOCATION_ISTANBUL)
                 .selectDepartment(DEPARTMENT_QA)
                 .applyFilters()

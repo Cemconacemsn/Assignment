@@ -1,6 +1,10 @@
 package com.insiderOne.ui.pages;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -37,7 +41,13 @@ public abstract class BasePage {
     }
 
     protected void click(By locator) {
-        waitForClickable(locator).click();
+        scrollIntoView(locator);
+        WebElement element = waitForClickable(locator);
+        try {
+            element.click();
+        } catch (ElementClickInterceptedException ex) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+        }
     }
 
     protected void type(By locator, String text) {
@@ -48,5 +58,11 @@ public abstract class BasePage {
 
     protected boolean isDisplayed(By locator) {
         return driver.findElements(locator).stream().anyMatch(WebElement::isDisplayed);
+    }
+
+    protected void scrollIntoView(By locator) {
+        WebElement element = waitForVisible(locator);
+        ((JavascriptExecutor) driver)
+                .executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
     }
 }

@@ -1,12 +1,6 @@
 package com.insiderOne.ui.pages;
 
-import java.time.Duration;
-import java.util.List;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.insiderOne.config.Configuration;
 import com.insiderOne.utils.WaitUtils;
@@ -31,6 +25,7 @@ public class HomePage extends BasePage {
     private static final By SOCIAL_PROOF_SECTION = By.cssSelector("section.homepage-social-proof");
     private static final By PLATFORM_SECTION = By.cssSelector("section.homepage-capabilities");
     private static final By FOOTER = By.cssSelector("footer.footer");
+    private static final By WERE_HIRING_LINK = By.cssSelector("a[data-text=\"We're hiring\"]");
 
     public HomePage open() {
         driver.get(Configuration.getInstance().get("base.url"));
@@ -53,6 +48,11 @@ public class HomePage extends BasePage {
 
     public CareersPage goToCareers() {
         throw new UnsupportedOperationException("Not implemented");
+    }
+
+    public CareersPage clickWereHiring() {
+        click(WERE_HIRING_LINK);
+        return new CareersPage();
     }
 
     public boolean isHomePageOpened() {
@@ -120,14 +120,4 @@ public class HomePage extends BasePage {
         waitForVisible(HEADER);
     }
 
-    private void scrollIntoView(By locator) {
-        List<WebElement> elements = driver.findElements(locator);
-        if (!elements.isEmpty()) {
-            WebElement element = elements.getFirst();
-            new WebDriverWait(driver, Duration.ofSeconds(5))
-                    .until(ExpectedConditions.visibilityOf(element));
-            ((org.openqa.selenium.JavascriptExecutor) driver)
-                    .executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
-        }
-    }
 }

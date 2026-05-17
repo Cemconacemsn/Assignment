@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.testng.annotations.Test;
 
 import com.insiderOne.core.BaseUiTest;
-import com.insiderOne.ui.pages.CareersPage;
 import com.insiderOne.ui.pages.HomePage;
 import com.insiderOne.ui.pages.JobListPage;
 import com.insiderOne.ui.pages.OpenRolesPage;
@@ -17,16 +16,15 @@ public class QAJobsTest extends BaseUiTest {
 
     @Test(enabled = false, description = "Filter open roles to QA jobs in Istanbul")
     public void shouldDisplayOnlyQAJobsInIstanbul() {
-        CareersPage careersPage = new HomePage()
+        new HomePage()
                 .open()
                 .acceptCookieConsentIfPresent()
                 .openCompanyMenu()
                 .goToCareers()
-                .waitUntilLoaded();
+                .waitUntilLoaded()
+                .clickSeeAllTeams();
 
-        OpenRolesPage openRolesPage = careersPage.clickSeeAllTeams();
-
-        JobListPage jobListPage = openRolesPage
+        JobListPage jobListPage = new OpenRolesPage()
                 .selectLocation(LOCATION_ISTANBUL)
                 .selectDepartment(DEPARTMENT_QA)
                 .applyFilters()
